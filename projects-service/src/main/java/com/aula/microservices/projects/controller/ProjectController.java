@@ -2,6 +2,7 @@ package com.aula.microservices.projects.controller;
 
 import com.aula.microservices.common.response.ApiResponse;
 import com.aula.microservices.projects.dto.CreateProjectRequest;
+import com.aula.microservices.projects.dto.ProjectDetailsResponse;
 import com.aula.microservices.projects.dto.ProjectResponse;
 import com.aula.microservices.projects.service.ProjectService;
 import jakarta.validation.Valid;
@@ -34,6 +35,11 @@ public class ProjectController {
     @GetMapping("/{id}")
     public ApiResponse<ProjectResponse> findById(@PathVariable String id) {
         return new ApiResponse<>(true, "Proyecto encontrado", service.findById(id));
+    }
+
+    @GetMapping("/{id}/details")
+    public ApiResponse<ProjectDetailsResponse> findDetailedById(@PathVariable String id) {
+        return new ApiResponse<>(true, "Detalle del proyecto", service.findDetailedById(id));
     }
 
     @GetMapping("/owner/{ownerId}")
