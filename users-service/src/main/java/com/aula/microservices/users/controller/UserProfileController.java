@@ -32,7 +32,7 @@ public class UserProfileController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<UserResponse> findById(@PathVariable Long id) {
+    public ApiResponse<UserResponse> findById(@PathVariable String id) {
         return new ApiResponse<>(true, "Usuario encontrado", service.findById(id));
     }
 }

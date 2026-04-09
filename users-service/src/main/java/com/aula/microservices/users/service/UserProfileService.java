@@ -4,7 +4,7 @@ import com.aula.microservices.common.exception.ResourceNotFoundException;
 import com.aula.microservices.users.dto.CreateUserRequest;
 import com.aula.microservices.users.dto.UserResponse;
 import com.aula.microservices.users.entity.UserProfile;
-import com.aula.microservices.users.repository.UserProfileRepository;
+import com.aula.microservices.users.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.List;
 @Service
 public class UserProfileService {
 
-    private final UserProfileRepository repository;
+    private final UserRepository repository;
 
-    public UserProfileService(UserProfileRepository repository) {
+    public UserProfileService(UserRepository repository) {
         this.repository = repository;
     }
 
@@ -41,7 +41,7 @@ public class UserProfileService {
                 .toList();
     }
 
-    public UserResponse findById(Long id) {
+    public UserResponse findById(String id) {
         UserProfile user = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id " + id));
         return toResponse(user);
