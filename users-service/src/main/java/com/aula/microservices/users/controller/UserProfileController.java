@@ -35,4 +35,9 @@ public class UserProfileController {
     public ApiResponse<UserResponse> findById(@PathVariable String id) {
         return new ApiResponse<>(true, "Usuario encontrado", service.findById(id));
     }
+
+    @GetMapping("/internal/{id}")
+    public ApiResponse<UserResponse> findInternalById(@PathVariable String id) {
+        return new ApiResponse<>(true, "Consulta interna: Usuario encontrado", service.findById(id));
+    }
 }
