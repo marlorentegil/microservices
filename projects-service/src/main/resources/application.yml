@@ -16,3 +16,7 @@ management:
   endpoint:
     health:
       show-details: always
+
+clients:
+  users:
+    base-url: http://localhost:8081
