@@ -2,11 +2,10 @@ server:
   port: 8080
 
 spring:
-  application:
-    name: gateway-service
-
   cloud:
     gateway:
+      default-filters:
+        - AddResponseHeader=X-Gateway, microservices-platform
       routes:
         - id: users-service-route
           uri: http://localhost:8081
