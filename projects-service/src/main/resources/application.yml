@@ -1,1 +1,18 @@
-aaa
+server:
+  port: 8082
+
+spring:
+  application:
+    name: projects-service
+
+  mongodb:
+    uri: mongodb+srv://microservicios:1234567890@gateway.acp2lp9.mongodb.net/projects_db?appName=Gateway
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
