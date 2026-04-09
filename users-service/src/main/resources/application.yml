@@ -1,18 +1,19 @@
 server:
-  port: 8081
+  port: 8081 # Cada servicio debe tener su propio puerto
 
 spring:
   application:
     name: users-service
-  datasource:
-    url: jdbc:postgresql://localhost:5432/microservices_db
-    username: tu_usuario
-    password: tu_password
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  data:
+    mongodb:
+      uri: mongodb+srv://microservicios:1234567890@gateway.acp2lp9.mongodb.net/users_db?appName=Gateway
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
