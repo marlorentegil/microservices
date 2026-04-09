@@ -14,15 +14,16 @@ public class Project {
     private String name;
     private String description;
     private String status;
-    
+
     @Field("owner_id")
-    private Long ownerId;
+    private String ownerId;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public Project() {}
+    public Project() {
+    }
 
-    public Project(String name, String description, String status, Long ownerId) {
+    public Project(String name, String description, String status, String ownerId) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -30,20 +31,47 @@ public class Project {
         this.createdAt = LocalDateTime.now();
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getName() {
+        return name;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public Long getOwnerId() { return ownerId; }
-    public void setOwnerId(Long ownerId) { this.ownerId = ownerId; }
+    public String getDescription() {
+        return description;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

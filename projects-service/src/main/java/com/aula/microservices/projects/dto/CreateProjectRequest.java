@@ -15,6 +15,6 @@ public record CreateProjectRequest(
         String description,
 
         @NotNull(message = "El ownerId es obligatorio")
-        Long ownerId
+        String ownerId
 ) {
 }
