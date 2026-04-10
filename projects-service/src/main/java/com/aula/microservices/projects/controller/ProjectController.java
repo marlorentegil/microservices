@@ -1,5 +1,4 @@
 package com.aula.microservices.projects.controller;
-
 import com.aula.microservices.common.response.ApiResponse;
 import com.aula.microservices.projects.dto.CreateProjectRequest;
 import com.aula.microservices.projects.dto.ProjectCreationResult;
@@ -9,15 +8,11 @@ import com.aula.microservices.projects.service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/projects")
-public class ProjectController {
-
+@RequestMapping("/api/projects") public class ProjectController {
     private final ProjectService service;
-
     public ProjectController(ProjectService service) {
         this.service = service;
     }
@@ -33,18 +28,14 @@ public class ProjectController {
         return new ApiResponse<>(true, "Listado de proyectos", service.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ApiResponse<ProjectResponse> findById(@PathVariable String id) {
+    @GetMapping("/{id}") public ApiResponse<ProjectResponse> findById(@PathVariable String id) {
         return new ApiResponse<>(true, "Proyecto encontrado", service.findById(id));
     }
 
-    @GetMapping("/{id}/details")
-    public ApiResponse<ProjectDetailsResponse> findDetailedById(@PathVariable String id) {
+    @GetMapping("/{id}/details") public ApiResponse<ProjectDetailsResponse> findDetailedById(@PathVariable String id) {
         return new ApiResponse<>(true, "Detalle del proyecto", service.findDetailedById(id));
     }
 
-    @GetMapping("/owner/{ownerId}")
-    public ApiResponse<List<ProjectResponse>> findByOwnerId(@PathVariable String ownerId) {
-        return new ApiResponse<>(true, "Proyectos del usuario", service.findByOwnerId(ownerId));
-    }
+    @GetMapping("/owner/{ownerId}") public ApiResponse<List<ProjectResponse>> findByOwnerId(@PathVariable String ownerId) {
+        return new ApiResponse<>(true, "Proyectos del usuario", service.findByOwnerId(ownerId)); }
 }

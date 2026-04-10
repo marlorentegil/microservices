@@ -25,6 +25,8 @@ public class ProjectService {
     }
 
     public ProjectCreationResult create(CreateProjectRequest request) {
+
+        // Validar que el usuario existe (llamada al microservicio users)
         usersClient.findUserById(request.ownerId());
 
         Project project = new Project(
@@ -36,13 +38,15 @@ public class ProjectService {
 
         Project saved = repository.save(project);
 
-        NotificationResponseDto notificationResult = notificationOrchestratorService.sendNotification(
-                new NotificationRequestDto(
-                        saved.getId(),
-                        saved.getOwnerId(),
-                        "Se ha creado el proyecto " + saved.getName()
-                )
-        );
+        // Enviar notificación
+        NotificationResponseDto notificationResult =
+                notificationOrchestratorService.sendNotification(
+                        new NotificationRequestDto(
+                                saved.getId(),
+                                saved.getOwnerId(),
+                                "Se ha creado el proyecto " + saved.getName()
+                        )
+                );
 
         return new ProjectCreationResult(
                 toResponse(saved),
@@ -60,8 +64,37 @@ public class ProjectService {
 
     public ProjectResponse findById(String id) {
         Project project = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Proyecto no encontrado con id " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Proyecto no encontrado con id " + id));
+
         return toResponse(project);
+    }
+
+    public List<ProjectResponse> findByOwnerId(String ownerId) {
+        return repository.findByOwnerId(ownerId)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public ProjectDetailsResponse findDetailedById(String id) {
+
+        Project project = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Proyecto no encontrado con id " + id));
+
+        RemoteUserResponse user = usersClient.findUserById(project.getOwnerId());
+
+        return new ProjectDetailsResponse(
+                project.getId(),
+                project.getName(),
+                project.getDescription(),
+                project.getStatus(),
+                project.getOwnerId(),
+                user.fullName(),
+                user.email(),
+                project.getCreatedAt()
+        );
     }
 
     private ProjectResponse toResponse(Project project) {
