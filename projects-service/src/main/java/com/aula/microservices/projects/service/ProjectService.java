@@ -1,7 +1,6 @@
 package com.aula.microservices.projects.service;
 
 import com.aula.microservices.common.exception.ResourceNotFoundException;
-import com.aula.microservices.projects.client.NotificationsClient;
 import com.aula.microservices.projects.client.UsersClient;
 import com.aula.microservices.projects.dto.*;
 import com.aula.microservices.projects.entity.Project;
@@ -15,17 +14,17 @@ public class ProjectService {
 
     private final ProjectRepository repository;
     private final UsersClient usersClient;
-    private final NotificationsClient notificationsClient;
+    private final NotificationOrchestratorService notificationOrchestratorService;
 
     public ProjectService(ProjectRepository repository,
                           UsersClient usersClient,
-                          NotificationsClient notificationsClient) {
+                          NotificationOrchestratorService notificationOrchestratorService) {
         this.repository = repository;
         this.usersClient = usersClient;
-        this.notificationsClient = notificationsClient;
+        this.notificationOrchestratorService = notificationOrchestratorService;
     }
 
-    public ProjectResponse create(CreateProjectRequest request) {
+    public ProjectCreationResult create(CreateProjectRequest request) {
         usersClient.findUserById(request.ownerId());
 
         Project project = new Project(
@@ -37,7 +36,7 @@ public class ProjectService {
 
         Project saved = repository.save(project);
 
-        notificationsClient.sendNotification(
+        NotificationResponseDto notificationResult = notificationOrchestratorService.sendNotification(
                 new NotificationRequestDto(
                         saved.getId(),
                         saved.getOwnerId(),
@@ -45,7 +44,11 @@ public class ProjectService {
                 )
         );
 
-        return toResponse(saved);
+        return new ProjectCreationResult(
+                toResponse(saved),
+                notificationResult.status(),
+                notificationResult.detail()
+        );
     }
 
     public List<ProjectResponse> findAll() {

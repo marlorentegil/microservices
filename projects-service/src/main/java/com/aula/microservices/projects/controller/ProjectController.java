@@ -2,6 +2,7 @@ package com.aula.microservices.projects.controller;
 
 import com.aula.microservices.common.response.ApiResponse;
 import com.aula.microservices.projects.dto.CreateProjectRequest;
+import com.aula.microservices.projects.dto.ProjectCreationResult;
 import com.aula.microservices.projects.dto.ProjectDetailsResponse;
 import com.aula.microservices.projects.dto.ProjectResponse;
 import com.aula.microservices.projects.service.ProjectService;
@@ -23,7 +24,7 @@ public class ProjectController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<ProjectResponse> create(@Valid @RequestBody CreateProjectRequest request) {
+    public ApiResponse<ProjectCreationResult> create(@Valid @RequestBody CreateProjectRequest request) {
         return new ApiResponse<>(true, "Proyecto creado correctamente", service.create(request));
     }
 
