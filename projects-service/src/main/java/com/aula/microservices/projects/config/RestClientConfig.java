@@ -15,4 +15,12 @@ public class RestClientConfig {
                 .baseUrl(usersBaseUrl)
                 .build();
     }
+
+    @Bean
+    public RestClient notificationsRestClient(
+            @Value("${clients.notifications.base-url}") String notificationsBaseUrl) {
+        return RestClient.builder()
+                .baseUrl(notificationsBaseUrl)
+                .build();
+    }
 }

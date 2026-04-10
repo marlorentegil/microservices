@@ -23,3 +23,5 @@ management:
 clients:
   users:
     base-url: http://localhost:8081
+  notifications:
+    base-url: http://localhost:8083
