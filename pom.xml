@@ -19,7 +19,7 @@
 		<module>iam-service</module>
 		<module>users-service</module>
 		<module>projects-service</module>
-		<!-- <module>modulenotifications-servicemodule</module> -->
+		<module>notifications-service</module>
 	</modules>
 
 	<properties>
