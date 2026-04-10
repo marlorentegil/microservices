@@ -1,11 +1,9 @@
 package com.aula.microservices.projects.service;
 
 import com.aula.microservices.common.exception.ResourceNotFoundException;
+import com.aula.microservices.projects.client.NotificationsClient;
 import com.aula.microservices.projects.client.UsersClient;
-import com.aula.microservices.projects.dto.CreateProjectRequest;
-import com.aula.microservices.projects.dto.ProjectDetailsResponse;
-import com.aula.microservices.projects.dto.ProjectResponse;
-import com.aula.microservices.projects.dto.RemoteUserResponse;
+import com.aula.microservices.projects.dto.*;
 import com.aula.microservices.projects.entity.Project;
 import com.aula.microservices.projects.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
@@ -17,10 +15,14 @@ public class ProjectService {
 
     private final ProjectRepository repository;
     private final UsersClient usersClient;
+    private final NotificationsClient notificationsClient;
 
-    public ProjectService(ProjectRepository repository, UsersClient usersClient) {
+    public ProjectService(ProjectRepository repository,
+                          UsersClient usersClient,
+                          NotificationsClient notificationsClient) {
         this.repository = repository;
         this.usersClient = usersClient;
+        this.notificationsClient = notificationsClient;
     }
 
     public ProjectResponse create(CreateProjectRequest request) {
@@ -34,6 +36,15 @@ public class ProjectService {
         );
 
         Project saved = repository.save(project);
+
+        notificationsClient.sendNotification(
+                new NotificationRequestDto(
+                        saved.getId(),
+                        saved.getOwnerId(),
+                        "Se ha creado el proyecto " + saved.getName()
+                )
+        );
+
         return toResponse(saved);
     }
 
@@ -48,31 +59,6 @@ public class ProjectService {
         Project project = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Proyecto no encontrado con id " + id));
         return toResponse(project);
-    }
-
-    public ProjectDetailsResponse findDetailedById(String id) {
-        Project project = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Proyecto no encontrado con id " + id));
-
-        RemoteUserResponse owner = usersClient.findUserById(project.getOwnerId());
-
-        return new ProjectDetailsResponse(
-                project.getId(),
-                project.getName(),
-                project.getDescription(),
-                project.getStatus(),
-                project.getOwnerId(),
-                owner.fullName(),
-                owner.email(),
-                project.getCreatedAt()
-        );
-    }
-
-    public List<ProjectResponse> findByOwnerId(String ownerId) {
-        return repository.findByOwnerId(ownerId)
-                .stream()
-                .map(this::toResponse)
-                .toList();
     }
 
     private ProjectResponse toResponse(Project project) {
