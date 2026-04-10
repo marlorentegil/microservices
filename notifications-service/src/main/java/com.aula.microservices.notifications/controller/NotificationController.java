@@ -18,7 +18,16 @@ public class NotificationController {
     }
 
     @PostMapping
-    public ApiResponse<NotificationResponse> send(@Valid @RequestBody NotificationRequest request) {
-        return new ApiResponse<>(true, "Notificación procesada", service.send(request));
+    public ApiResponse<NotificationResponse> send(
+            @Valid @RequestBody NotificationRequest request,
+            @RequestParam(defaultValue = "false") boolean slow,
+            @RequestParam(defaultValue = "false") boolean fail,
+            @RequestParam(defaultValue = "false") boolean randomFail
+    ) {
+        return new ApiResponse<>(
+                true,
+                "Notificación procesada",
+                service.send(request, slow, fail, randomFail)
+        );
     }
 }
