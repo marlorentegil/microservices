@@ -2,6 +2,7 @@ package com.aula.microservices.projects.client;
 
 import com.aula.microservices.projects.dto.RemoteApiResponse;
 import com.aula.microservices.projects.dto.RemoteUserResponse;
+import org.springframework.beans.factory.annotation.Qualifier; // Import añadido
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -11,7 +12,7 @@ public class UsersClient {
 
     private final RestClient usersRestClient;
 
-    public UsersClient(RestClient usersRestClient) {
+    public UsersClient(@Qualifier("usersRestClient") RestClient usersRestClient) {
         this.usersRestClient = usersRestClient;
     }
 
